@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 xs = torch.arange(-5, 5, 0.01)
-noise = np.random.normal(0, 20, (xs.numel(),))
-ys = -25 * xs **2 + 31.1 * xs + 0.25 + noise
+noise = np.random.normal(0, 1, (xs.numel(),))
+ys = 2 * xs **2 + 2 * xs + 2 + noise
 
 plt.scatter([x for x in xs], [y for y in ys])
 plt.grid()
