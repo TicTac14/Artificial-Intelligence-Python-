@@ -6,8 +6,6 @@ train_y = 51.5 * train_x + 0.2525
 w = torch.randn(1, requires_grad=True)
 b = torch.randn(1, requires_grad=True)
 
-
-
 def predict(x):
     return w*x + b
 
