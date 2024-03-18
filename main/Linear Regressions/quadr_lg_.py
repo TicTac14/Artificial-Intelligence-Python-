@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 xs = torch.arange(-5, 5, 0.01)
-noise = np.random.normal(0, 1, (xs.numel(),))
+noise = np.random.normal(0, 10, (xs.numel(),))
 ys = 2 * xs **2 + 2 * xs + 2 + noise
 
 plt.scatter([x for x in xs], [y for y in ys])
