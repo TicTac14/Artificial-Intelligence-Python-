@@ -1,7 +1,7 @@
 import torch
 import torchvision
 import matplotlib.pyplot as plt
-
+from random import randint
 train_data = torchvision.datasets.MNIST(
     root = 'data',
     train = True,                         
@@ -53,10 +53,15 @@ class SoftmaxClassificationModel():
     def forward(self, X):
         return self.softmax(X @ self.w + self.b)
     
-    def gradient_descent(self, X, y_true, epochs):
+    def gradient_descent(self, X, y_true, epochs, batch_size):
         for epoch in range(epochs):
-            y_pred = self.forward(X)
-            loss = self.categorical_loss(y_pred, y_true)
+            rand_index = randint(0, len(X)-batch_size)
+            new_x = X[rand_index:rand_index + batch_size]
+            new_y_true = y_true[rand_index:rand_index + batch_size]
+            
+
+            y_pred = self.forward(new_x)
+            loss = self.categorical_loss(y_pred, new_y_true)
             loss.backward()
 
             with torch.no_grad():
@@ -74,22 +79,20 @@ X = train_data.data.flatten(1)/255 # normalize
 y_true = train_data.targets
 
 model = SoftmaxClassificationModel(X.shape[1], (y_true.max() + 1).item(), 1)
-model.gradient_descent(X=X, y_true=y_true, epochs=1000)
+model.gradient_descent(X=X, y_true=y_true, epochs=10000, batch_size=5000) 
 
 total_correct = 0
-average = 0
 
 for i in range(test_data.data.shape[0]):
     test_tensor_x, test_tensor_y = test_data.data.flatten(1)[20]/255, test_data.targets[20]
     prediction = model.forward(test_tensor_x).flatten(0)
-    average += torch.max(prediction).item() * 100
     if torch.max(prediction).item() == prediction[test_tensor_y.item()].item():
         total_correct += 1
 
-average *= 1/((y_true.max() + 1).item())
+
 
 print(f"Test Accuracy: {total_correct/test_data.data.shape[0] * 100}%")
-print(f"Average Prediction Confidence: {average}")
+
 
 
 
