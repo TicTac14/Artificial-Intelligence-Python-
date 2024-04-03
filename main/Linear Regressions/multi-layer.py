@@ -1,13 +1,13 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from math import pi
+from random import randint
 
 
 a, b, c, d = 1, 1, 1, 1  # Coefficients for our quadratic equation
 
 # Generate data
-X = np.linspace(-2*pi, 2*pi, 200)
+X = np.linspace(-100, 100, 1000)
 noise = np.random.normal(0, 1, (200,))
 y = 2 * X + 45.1 
 
@@ -36,13 +36,18 @@ def mse_loss(predictions, targets):
 
 
 # Hyperparameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 epochs = 200000
+batch_size = 100
 
 for epoch in range(epochs):
     # Forward pass
-    predictions = forward(X_tensor)
-    loss = mse_loss(predictions, y_tensor)
+    batch_split = randint(0, X_tensor.shape[0]-batch_size)
+    batch_x = X_tensor[batch_split: batch_split + batch_size]
+    batch_y = y_tensor[batch_split: batch_split + batch_size]
+    predictions = forward(batch_x)
+
+    loss = mse_loss(predictions, batch_y)
 
     # Backward pass
     loss.backward()  # Compute gradients
