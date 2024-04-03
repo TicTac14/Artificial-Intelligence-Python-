@@ -1,7 +1,7 @@
 import torch
 import matplotlib.pyplot as plt
 from random import randint
-x = torch.arange(-10, 10, 0.001, dtype=torch.float32).reshape(-1, 1)
+x = torch.arange(-20, 20, 0.0001, dtype=torch.float32).reshape(-1, 1)
 noise = torch.normal(0, 1, size=(x.numel(), 1))
 y_true = 2.5 * x + 5.0 + noise
 
